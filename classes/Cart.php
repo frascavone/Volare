@@ -39,7 +39,7 @@ class CartManager extends DBManager{
       tratte.prezzo as prezzo_singolo,
       tratte.prezzo_business as prezzo_business,
       tratte.prezzo * cart_item.quantity as total,
-      cart_item.data_and as data_and
+      cart_item.data as data
     FROM
       cart_item
       INNER JOIN tratte
@@ -65,13 +65,10 @@ class CartManager extends DBManager{
       $cartItemMgr = new CartItemManager();
       $cartItemMgr->delete($cart_itemId); 
     } 
-
-
-
   }
 
 
-  public function addToCart($flight_id, $cartId, $data_and){
+  public function addToCart($flight_id, $cartId, $data){
     $quantity = 0;
     $result = $this->db -> query("SELECT quantity FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
     if(count($result) >0){
@@ -80,13 +77,13 @@ class CartManager extends DBManager{
     $quantity ++;
     
     if (count($result) > 0){
-    $this->db -> execute("UPDATE cart_item SET quantity = $quantity, data_and = '$data_and' WHERE cart_id = $cartId AND flight_id = $flight_id");   
+    $this->db -> execute("UPDATE cart_item SET quantity = $quantity, data = $data WHERE cart_id = $cartId AND flight_id = $flight_id");   
     } else{
       $cartItemMgr = new CartItemManager();
       $newId = $cartItemMgr->create([
        'cart_id' => $cartId,
        'flight_id' => $flight_id,
-       'data_and' => $data_and,
+       'data' => $data,
        'quantity' => 1
       ]); 
     } 
@@ -124,7 +121,7 @@ class CartManager extends DBManager{
 class CartItemManager extends DBManager{
   public function __construct(){
     parent::__construct();
-    $this->columns = array('id', 'cart_id', 'flight_id', 'quantity', 'data_and');
+    $this->columns = array('id', 'cart_id', 'flight_id', 'quantity', 'data');
     $this->tableName = 'cart_item';
   }
 }

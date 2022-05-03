@@ -1,17 +1,19 @@
-<?php
+<?php 
+require_once "../include/init.php";
 $page = isset($_GET["page"]) ? $_GET["page"] : 'homepage';
 ?>
 
-<?php include "../include/init.php" ?>
 
 <?php include ROOT_PATH . "public/template-parts/header.php" ?>
 
-<div id="main" class="container mt-3">
+<div class="container mt-3">
   <div class="row">
-    <div class="col-9">
-      <?php include ROOT_PATH . "public/pages/" . $page . ".php" ?>
+    <div class="col-lg-9">
+      <div class="main">
+        <?php include "pages/$page.php"; ?>
+      </div>
     </div>
-    <div class="col-3">
+    <div id="sidebar" class="col-lg-3 mt-3">
       <?php include ROOT_PATH . "public/template-parts/sidebar.php" ?> 
     </div>
   </div>

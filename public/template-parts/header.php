@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://bootswatch.com/5/zephyr/bootstrap.css">
   <link rel="stylesheet" href=" <?php echo ROOT_URL ?>assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>VOLARE</title>
+  <title>Volare</title>
 </head>
 
 <body>
@@ -18,23 +18,26 @@
     <p id="company-name">VOLARE</p>
   </div>
 
-  <nav class="navbar navbar-expand-md navbar bg-light">
+  <nav class="navbar navbar-expand-md navbar bg-light" aria-label="Fourth navbar example">
     <div class="container">
-      <a class="navbar-brand" href="#"><img src="<?php echo ROOT_URL ?>assets/immagini/airlogo.png" alt="logo"></a>
+      <a class="navbar-brand" href="#">
+        <img src="<?php echo ROOT_URL ?>assets/immagini/airlogo.png" alt="logo">
+      </a>
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExample">
-        <ul class="navbar-nav me-auto">
+      <div class="collapse navbar-collapse" id="navbarsExample04">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=homepage">Home</a>
+            <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=homepage">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=offers">Offerte</a>
+            <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=offers">Offerte</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=services">Servizi</a>
+            <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=services">Servizi</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto align-items-center">

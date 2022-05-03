@@ -92,6 +92,19 @@ class DB {
     mysqli_free_result($result);
     return $resultArray;
   }
+
+  public function select_some_inverted($tableName, $part, $arr)
+  {
+    $query = "SELECT * FROM $tableName WHERE partenza = '$arr' AND arrivo = '$part'";
+    // var_dump($query); die;
+
+    $result = mysqli_query($this->conn, $query);
+    $resultArray = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+    return $resultArray;
+  }
+
  
   // query "Cancella uno"
   public function delete_one($tableName, $id)
@@ -193,6 +206,16 @@ class DBManager{
   public function getSome()
   {
     $results = $this->db->select_some($this->tableName, $this->part, $this->arr);
+    $objects = array();
+    foreach ($results as $result) {
+      array_push($objects, (object)$result);
+    }
+    return $objects;
+  }
+
+  public function getSomeInverted()
+  {
+    $results = $this->db->select_some_inverted($this->tableName, $this->part, $this->arr);
     $objects = array();
     foreach ($results as $result) {
       array_push($objects, (object)$result);

@@ -6,9 +6,6 @@
   text-decoration:overline;
   font-size:x-large;
 }
-#company-name{
-
-}
 
 .logo{
   height: 100px;
@@ -18,6 +15,7 @@
   margin-bottom: 5px;
   margin-top: 10px;
 }
+
 .navbar-brand img{
   display:none;
 }
@@ -38,9 +36,15 @@
   }
 }
 
-#form-ricerca {
-  background-color: rgba(255, 255, 255, 0.6);  
+
+@media only screen and (max-width: 991.98px) {
+  #sidebar{
+    display: flex;
+    flex-direction: row;
+  }
+
 }
+
 footer{
   text-align: center;
   width: 100%;

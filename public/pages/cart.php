@@ -12,11 +12,11 @@ if(isset($_POST['delete'])){
   $cm->removeFromCart($flight_id, $cartId);
 }
 
-if (isset($_POST['change'])){
+// if (isset($_POST['change'])){
   
-  //modifico dati tratta
+//   //modifico dati tratta
   
-}
+// }
 
 $cart_total = $cm -> getCartTotal($cartId);
 $cart_items = $cm -> getCartItems($cartId);
@@ -37,7 +37,7 @@ $cart_items = $cm -> getCartItems($cartId);
     <li class="list-group-item d-flex justify-content-between lh-sm">
       <div>
         <h6 class="my-0"><?php echo $item['partenza'] ?> - <?php echo $item['arrivo'] ?></h6>
-        <p class="my-0 text-muted"><?php echo date('j M', strtotime($item['data_and'])); ?> &bull; <?php echo date('g:i', strtotime($item['ora_partenza'])); ?> - <?php echo date('g:i', strtotime($item['ora_arrivo'])); ?></p>
+        <p class="my-0 text-muted"><?php echo date('j M', strtotime($item['data'])); ?> &bull; <?php echo date('H:i', strtotime($item['ora_partenza'])); ?> - <?php echo date('H:i', strtotime($item['ora_arrivo'])); ?></p>
         <small class="text-muted">id Volo <?php echo $item['id'] ?></small>
       </div>
       <div class="text-end">
@@ -59,9 +59,9 @@ $cart_items = $cm -> getCartItems($cartId);
     </li>
   </ul>
   
-  <form action="" class="card p-2 d-flex ">
-    <div class="input-group text-center">      
-      <button type="submit" class="btn btn-warning">ACQUISTA</button>            
+  <form class="card p-2 d-flex ">
+    <div class="row">      
+      <a href="<?php echo ROOT_URL; ?>?page=checkout"><button type="submit" class="btn btn-warning col-6">ACQUISTA</button></a>
     </div>
   </form>
   
@@ -70,6 +70,6 @@ $cart_items = $cm -> getCartItems($cartId);
     <p>Seleziona i tuoi voli per iniziare</p>
     <a href="<?php echo ROOT_URL; ?>public?page=homepage" class="btn btn-primary">TORNA ALLA HOME</a>
   <?php endif;?>  
-
+  
 </div>
 
