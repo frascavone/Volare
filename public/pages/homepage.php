@@ -1,5 +1,5 @@
 <div class="container g-3 p-2 rounded-3">
-  <form id="form-ricerca" action="<?php echo ROOT_URL ?>public/?page=search-results" method="post">
+  <form id="form-ricerca" action="<?php echo ROOT_URL ?>public/?page=search-results" method="get">
     <input class="form-check-input ml-2" id="and-rit" type="checkbox" name="and-rit">Solo andata
     <script>
       var checkbox = document.getElementById('and-rit');
@@ -48,6 +48,7 @@
         <input class="form-control" id="bambini" type="number" name="num_bambini" placeholder="bambini">
       </div>
       <div class="col-4">
+        <input type="hidden" name="page" value="search-results">
         <input type="submit" class="btn btn-warning" id="ricerca-voli" value="Cerca Voli"></input>
       </div>
     </div>

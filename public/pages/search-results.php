@@ -1,16 +1,17 @@
 <?php
 // Impedire di accedere direttamente al file tramite URL
-if (! defined('ROOT_URL')) {die;}
+if (!defined('ROOT_URL')) {
+  die;
+}
 
-if (isset($_POST['add_to_cart'])){
+if (isset($_POST['add_to_cart'])) {
 
   //prendi i valori di "flight_id", "partenza", "arrivo" e "data" dal form
   $flight_id = $_POST['id'];
   $part = $_POST['partenza'];
   $arr = $_POST['arrivo'];
-
-  $data = isset($_POST['data_rit']) ? $_POST['data_rit'] : $_POST['data_and'];
-
+  $data = $_POST['data'];
+  
   //logica di "add_to_cart"
   $cm = new CartManager();
   $cartId =  $cm->getCurrentCartId();
@@ -22,130 +23,129 @@ if (isset($_POST['add_to_cart'])){
 
 }
 
-
-$flightMgr = new FlightFinder();
-$flights = $flightMgr->getSome();
-
+$flightMgr = new FlightManager();
+$depFlights = $flightMgr->getSome();
 ?>
 
-<?php if($flights) : ?>
+<?php if ($depFlights) : ?>
 
   <h3>Andata</h3>
 
-  <?php foreach($flights as $flight) : ?>
-    
-    <div class="card-group mt-3 mb-3">
-      <div class="card text-center">    
+  <?php foreach ($depFlights as $flight) : ?>
+
+    <div class="card-group mt-3 mb-3" class="departureCard" >
+      <div class="card text-center">
         <div class="card-body">
           <small class="text-muted">N. volo</small>
         </div>
         <div class="card-body">
-          <h5 class="card-title"><?php echo $flight -> id ?></h5>    
+          <h5 class="card-title"><?php echo $flight->id ?></h5>
         </div>
       </div>
 
-      <div class="card text-center">    
+      <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight -> ora_partenza)); ?></h5>        
+          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_partenza)); ?></h5>
         </div>
         <div class="card-footer">
-          <small class="text-muted"><?php echo $flight -> partenza ?></small>
+          <small class="text-muted"><?php echo $flight->partenza ?></small>
         </div>
       </div>
 
-      <div class="card text-center">    
+      <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title ">Durata</h5>
           <p class="card-text">orario</p>
-        </div>    
+        </div>
       </div>
 
-      <div class="card text-center">    
+      <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight -> ora_arrivo)); ?></h5>
+          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_arrivo)); ?></h5>
         </div>
         <div class="card-footer">
-          <small class="text-muted"><?php echo $flight -> arrivo ?></small>
+          <small class="text-muted"><?php echo $flight->arrivo ?></small>
         </div>
       </div>
 
-      <div class="card text-center">    
+      <div class="card text-center">
         <div class="card-body">
           <form action="" method="post">
-            <input name="id" type="hidden" value="<?php echo $flight -> id?>">
-            <input name="partenza" type="hidden" value="<?php echo $flight -> partenza?>">
-            <input name="arrivo" type="hidden" value="<?php echo $flight -> arrivo?>">
-            <input name="data_and" type="hidden" value="<?php echo $_POST['data_and'];?>">
+            <input name="id" type="hidden" value="<?php echo $flight->id ?>">
+            <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
+            <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
+            <input name="data" type="hidden" value="<?php echo $_GET['data_and']; ?>">
             <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
           </form>
         </div>
         <div class="card-footer">
-          <small class=""><?php echo $flight -> prezzo ?> €</small>
+          <small class=""><?php echo $flight->prezzo ?> €</small>
         </div>
       </div>
     </div>
   <?php endforeach; ?>
 
-<?php if (isset($_POST['data_rit'])) : ?>
-  <?php $flights = $flightMgr->getSomeInverted(); ?>
+  <?php if (isset($_GET['data_rit'])) : ?>
+  <?php $retFlights = $flightMgr->getSomeInverted(); ?>
 
-    <h3>Ritorno</h3>
+    <h3 class="resultCard">Ritorno</h3>
 
-      <?php foreach($flights as $flight) : ?>
-
-      <div class="card-group mt-3 mb-3">
-        <div class="card text-center">    
+      <?php foreach ($retFlights as $flight) : ?>
+      
+      <div class="card-group mt-3 mb-3 returnCard" >
+      <hr>
+        <div class="card text-center">
           <div class="card-body">
             <small class="text-muted">N. volo</small>
           </div>
           <div class="card-body">
-            <h5 class="card-title"><?php echo $flight -> id ?></h5>    
+            <h5 class="card-title"><?php echo $flight->id ?></h5>
           </div>
         </div>
 
-        <div class="card text-center">    
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight -> ora_partenza)); ?></h5>        
+            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_partenza)); ?></h5>
           </div>
           <div class="card-footer">
-            <small class="text-muted"><?php echo $flight -> partenza ?></small>
+            <small class="text-muted"><?php echo $flight->partenza ?></small>
           </div>
         </div>
 
-        <div class="card text-center">    
+        <div class="card text-center">
           <div class="card-body">
             <h5 class="card-title ">Durata</h5>
             <p class="card-text">orario</p>
-          </div>    
+          </div>
         </div>
 
-        <div class="card text-center">    
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight -> ora_arrivo)); ?></h5>
+            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_arrivo)); ?></h5>
           </div>
           <div class="card-footer">
-            <small class="text-muted"><?php echo $flight -> arrivo ?></small>
+            <small class="text-muted"><?php echo $flight->arrivo ?></small>
           </div>
         </div>
 
-        <div class="card text-center">    
+        <div class="card text-center">
           <div class="card-body">
             <form action="" method="post">
-              <input name="id" type="hidden" value="<?php echo $flight -> id?>">
-              <input name="partenza" type="hidden" value="<?php echo $flight -> partenza?>">
-              <input name="arrivo" type="hidden" value="<?php echo $flight -> arrivo?>">
-              <input name="data_rit" type="hidden" value="<?php echo $_POST['data_rit'];?>">
+              <input name="id" type="hidden" value="<?php echo $flight->id ?>">
+              <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
+              <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
+              <input name="data" type="hidden" value="<?php echo $_GET['data_rit']; ?>">
               <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
             </form>
           </div>
           <div class="card-footer">
-            <small class=""><?php echo $flight -> prezzo ?> €</small>
+            <small class=""><?php echo $flight->prezzo ?> €</small>
           </div>
         </div>
       </div>
       <?php endforeach; ?>
-  <?php endif;?>
-  <?php else : ?>
-    <h5>Ci dispiace, ma non ci sono voli disponibili per gli aeroporti selezionati :(</h5>
-    <a href="<?php echo ROOT_URL; ?>public?page=homepage" class="btn btn-primary">TORNA ALLA HOME</a>
-<?php endif;?>
+  <?php endif; ?>
+<?php else : ?>
+  <h5>Ci dispiace, ma non ci sono voli disponibili per gli aeroporti selezionati :(</h5>
+  <a href="<?php echo ROOT_URL; ?>public?page=homepage" class="btn btn-primary">TORNA ALLA HOME</a>
+<?php endif; ?>

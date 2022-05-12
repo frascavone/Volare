@@ -8,7 +8,6 @@ class CartManager extends DBManager{
     parent::__construct();
     $this->columns = array('id', 'client_id');
     $this->tableName = 'carrello';
-
     $this-> _initClientIdFromSession();
   }
 
@@ -103,7 +102,6 @@ class CartManager extends DBManager{
     return $cartId;
   }
 
-
   // private methods
   private function _initClientIdFromSession(){
     if (isset($_SESSION['client_id'])){
@@ -115,8 +113,10 @@ class CartManager extends DBManager{
       $_SESSION['client_id'] = $str;
       $this->clientId = $str;
     }
-  }    
+  }  
 }
+
+
 
 class CartItemManager extends DBManager{
   public function __construct(){
