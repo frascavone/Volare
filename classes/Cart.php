@@ -48,6 +48,12 @@ class CartManager extends DBManager{
     ");
   }
 
+  public function removeCart($cartId){
+    $result = $this->db -> query("SELECT id FROM carrello WHERE id = $cartId");
+    if($result) 
+    $this -> delete($cartId);
+  }
+
   public function removeFromCart($flight_id, $cartId){
 
     $quantity = 0;

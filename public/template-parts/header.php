@@ -34,7 +34,7 @@
             <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=homepage">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=offers">Offerte</a>
+            <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=test">test</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="<?php echo ROOT_URL; ?>public?page=services">Servizi</a>
