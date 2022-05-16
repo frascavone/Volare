@@ -11,13 +11,14 @@ if (isset($_POST['add_to_cart'])) {
   $part = $_POST['partenza'];
   $arr = $_POST['arrivo'];
   $data = $_POST['data'];
-  
+  $qty = $_POST['quantity'];
+
   //logica di "add_to_cart"
   $cm = new CartManager();
   $cartId =  $cm->getCurrentCartId();
 
   //aggiungi al carrello "cart_id" il volo "flight_id" con data "$data"
-  $cm->addToCart($flight_id, $cartId, $data);
+  $cm->addToCart($flight_id, $cartId, $data, $qty);
 
   //messaggio per l'utente
 
@@ -33,7 +34,7 @@ $depFlights = $flightMgr->getSome();
 
   <?php foreach ($depFlights as $flight) : ?>
 
-    <div class="card-group mt-3 mb-3" class="departureCard" >
+    <div class="card-group mt-3 mb-3" class="departureCard">
       <div class="card text-center">
         <div class="card-body">
           <small class="text-muted">N. volo</small>
@@ -75,6 +76,7 @@ $depFlights = $flightMgr->getSome();
             <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
             <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
             <input name="data" type="hidden" value="<?php echo $_GET['data_and']; ?>">
+            <input name="quantity" type="hidden" value="<?php echo $_GET['quantity']; ?>">
             <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
           </form>
         </div>
@@ -86,14 +88,14 @@ $depFlights = $flightMgr->getSome();
   <?php endforeach; ?>
 
   <?php if (isset($_GET['data_rit'])) : ?>
-  <?php $retFlights = $flightMgr->getSomeInverted(); ?>
+    <?php $retFlights = $flightMgr->getSomeInverted(); ?>
 
     <h3 class="resultCard">Ritorno</h3>
 
-      <?php foreach ($retFlights as $flight) : ?>
-      
-      <div class="card-group mt-3 mb-3 returnCard" >
-      <hr>
+    <?php foreach ($retFlights as $flight) : ?>
+
+      <div class="card-group mt-3 mb-3 returnCard">
+        <hr>
         <div class="card text-center">
           <div class="card-body">
             <small class="text-muted">N. volo</small>
@@ -135,6 +137,7 @@ $depFlights = $flightMgr->getSome();
               <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
               <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
               <input name="data" type="hidden" value="<?php echo $_GET['data_rit']; ?>">
+              <input name="quantity" type="hidden" value="<?php echo $_GET['quantity']; ?>">
               <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
             </form>
           </div>
@@ -143,7 +146,7 @@ $depFlights = $flightMgr->getSome();
           </div>
         </div>
       </div>
-      <?php endforeach; ?>
+    <?php endforeach; ?>
   <?php endif; ?>
 <?php else : ?>
   <h5>Ci dispiace, ma non ci sono voli disponibili per gli aeroporti selezionati :(</h5>

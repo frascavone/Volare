@@ -4,9 +4,8 @@ $cartId =  $cm->getCurrentCartId();
 $cart_total = $cm->getCartTotal($cartId);
 ?>
 
-<footer>
-  <hr>
-  Copiright &#169 <?php echo date("Y"); ?> fra.sca
+<footer class="bg-primary">
+  Copiright &#169 <?php echo date("Y"); ?> fra.scavone
 </footer>
 
 

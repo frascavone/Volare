@@ -36,7 +36,11 @@ $cart_items = $cm->getCartItems($cartId);
           <small class="text-muted">id Volo <?php echo $item['id'] ?></small>
         </div>
         <div class="text-end">
-          <h6><?php echo $item['prezzo_singolo'] ?> €</h6>
+          <h6>
+            <?php 
+            if($item['quantity'] > 1) {echo $item['quantity'].' x ';} echo $item['prezzo_singolo'];
+            ?> €
+          </h6>
           <form action="" method="post">
             <input type="hidden" name="id" value="<?php echo $item['id'] ?>">
             <!-- FUNZIONALITÀ DA INSERIRE -->

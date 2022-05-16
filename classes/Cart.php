@@ -12,6 +12,10 @@ class CartManager extends DBManager{
   }
 
   // public methods
+  public function getQty($cartId, $flight_id){
+    $result = $this->db -> query("SELECT quantity FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
+    return $result[0]; 
+  }
 
   public function getCartTotal($cartId){
     $result = $this-> db -> query("
@@ -38,7 +42,8 @@ class CartManager extends DBManager{
       tratte.prezzo as prezzo_singolo,
       tratte.prezzo_business as prezzo_business,
       tratte.prezzo * cart_item.quantity as total,
-      cart_item.data as data
+      cart_item.data as data,
+      cart_item.quantity as quantity
     FROM
       cart_item
       INNER JOIN tratte
@@ -73,7 +78,7 @@ class CartManager extends DBManager{
   }
 
 
-  public function addToCart($flight_id, $cartId, $data){
+  public function addToCart($flight_id, $cartId, $data, $qty){
     $quantity = 0;
     $result = $this->db -> query("SELECT quantity FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
     if(count($result) >0){
@@ -89,7 +94,7 @@ class CartManager extends DBManager{
        'cart_id' => $cartId,
        'flight_id' => $flight_id,
        'data' => $data,
-       'quantity' => 1
+       'quantity' => $qty
       ]); 
     } 
   }
