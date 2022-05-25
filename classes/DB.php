@@ -1,6 +1,7 @@
 <?php
 
-class DB {
+class DB
+{
 
   private $conn;
   public $pdo;
@@ -15,27 +16,29 @@ class DB {
       die;
     }
     $this->pdo = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS);
-    $this-> pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
   // query
-  public function query($sql){
+  public function query($sql)
+  {
     //try {
-      $q = $this->pdo->query($sql);
-      if (!$q) {
-        //throw new Exception("Errore esecuzione query...");
-        return;
-      }
-      $data = $q->fetchAll();
-      return $data;
+    $q = $this->pdo->query($sql);
+    if (!$q) {
+      //throw new Exception("Errore esecuzione query...");
+      return;
+    }
+    $data = $q->fetchAll();
+    return $data;
     //}catch (Exception $e) {
     //   throw $e;
     //}
-  } 
-  
-  public function execute($sql){
-    $stnt = $this -> pdo -> prepare($sql);
-    $stnt -> execute();
+  }
+
+  public function execute($sql)
+  {
+    $stnt = $this->pdo->prepare($sql);
+    $stnt->execute();
   }
 
   // query "Seleziona tutti"
@@ -81,9 +84,9 @@ class DB {
   }
 
   // query "Seleziona qualcuno"
-  public function select_some($tableName, $part, $arr)
+  public function select_some($tableName, $dep, $dest)
   {
-    $query = "SELECT * FROM $tableName WHERE partenza = '$part' AND arrivo = '$arr'";
+    $query = "SELECT * FROM $tableName WHERE departure = '$dep' AND destination = '$dest'";
     // var_dump($query); die;
 
     $result = mysqli_query($this->conn, $query);
@@ -93,9 +96,9 @@ class DB {
     return $resultArray;
   }
 
-  public function select_some_inverted($tableName, $part, $arr)
+  public function select_some_inverted($tableName, $dep, $dest)
   {
-    $query = "SELECT * FROM $tableName WHERE partenza = '$arr' AND arrivo = '$part'";
+    $query = "SELECT * FROM $tableName WHERE departure = '$dest' AND destination = '$dep'";
     // var_dump($query); die;
 
     $result = mysqli_query($this->conn, $query);
@@ -105,7 +108,7 @@ class DB {
     return $resultArray;
   }
 
- 
+
   // query "Cancella uno"
   public function delete_one($tableName, $id)
   {
@@ -177,7 +180,8 @@ class DB {
   }
 }
 
-class DBManager{
+class DBManager
+{
   protected $db;
   protected $columns;
   protected $tableName;
@@ -205,7 +209,7 @@ class DBManager{
 
   public function getSome()
   {
-    $results = $this->db->select_some($this->tableName, $this->part, $this->arr);
+    $results = $this->db->select_some($this->tableName, $this->dep, $this->dest);
     $objects = array();
     foreach ($results as $result) {
       array_push($objects, (object)$result);
@@ -215,7 +219,7 @@ class DBManager{
 
   public function getSomeInverted()
   {
-    $results = $this->db->select_some_inverted($this->tableName, $this->part, $this->arr);
+    $results = $this->db->select_some_inverted($this->tableName, $this->dep, $this->dest);
     $objects = array();
     foreach ($results as $result) {
       array_push($objects, (object)$result);
@@ -235,7 +239,8 @@ class DBManager{
     return (int) $rowsDeleted;
   }
 
-  public function update($obj, $id)  {
+  public function update($obj, $id)
+  {
     $rowsUpdated = $this->db->update_one($this->tableName, (array) $obj, (int)$id);
     return (int) $rowsUpdated;
   }

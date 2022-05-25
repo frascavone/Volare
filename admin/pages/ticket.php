@@ -1,1 +1,0 @@
-<h1>Dettaglio Biglietto</h1>

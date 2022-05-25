@@ -1,1 +1,0 @@
-<h1>Scelta posti</h1>

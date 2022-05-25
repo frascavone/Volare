@@ -5,11 +5,11 @@ $cm = new CartManager();
 $cartId =  $cm->getCurrentCartId();
 if (isset($_POST['delete'])) {
   // cancella elemento del carrello
-  $flight_id = $_POST['id'];
-  $cm->removeFromCart($flight_id, $cartId);
+  $flightId = $_POST['id'];
+  $cm->removeFromCart($flightId, $cartId);
 }
-$cart_total = $cm->getCartTotal($cartId);
-$cart_items = $cm->getCartItems($cartId);
+$cartTotal = $cm->getCartTotal($cartId);
+$tickets = $cm->getTickets($cartId);
 ?>
 
 <!-- <div class="row g-5"> -->
@@ -17,17 +17,17 @@ $cart_items = $cm->getCartItems($cartId);
 
 <ul class="list-group mb-3">
 
-  <?php foreach ($cart_items as $item) : ?>
+  <?php foreach ($tickets as $ticket) : ?>
     <li class="list-group-item d-flex justify-content-between lh-sm">
       <div>
-        <h6 class="my-0"><?php echo $item['partenza'] ?> - <?php echo $item['arrivo'] ?></h6>
-        <p class="my-0 text-muted"><?php echo date('j M', strtotime($item['data'])); ?> &bull; <?php echo date('H:i', strtotime($item['ora_partenza'])); ?> - <?php echo date('H:i', strtotime($item['ora_arrivo'])); ?></p>
-        <small class="text-muted">id Volo <?php echo $item['id'] ?></small>
+        <h6 class="my-0"><?php echo $ticket['departure'] ?> - <?php echo $ticket['destination'] ?></h6>
+        <p class="my-0 text-muted"><?php echo date('j M', strtotime($ticket['flightDate'])); ?> &bull; <?php echo date('H:i', strtotime($ticket['depTime'])); ?> - <?php echo date('H:i', strtotime($ticket['destTime'])); ?></p>
+        <small class="text-muted">id Volo <?php echo $ticket['id'] ?></small>
       </div>
       <div class="text-end">
-        <h6><?php echo $item['prezzo_singolo'] ?> €</h6>
+        <h6><?php echo $ticket['singlePrice'] ?> €</h6>
         <form action="" method="post">
-          <input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+          <input type="hidden" name="id" value="<?php echo $ticket['id'] ?>">
           <!-- FUNZIONALITÀ DA INSERIRE -->
           <!-- <button name="change" type="submit" class="btn btn-sm btn-info">MODIFICA</button> -->
           <button name="delete" type="submit" class="btn btn-sm btn-danger">CANCELLA</button>
@@ -38,17 +38,17 @@ $cart_items = $cm->getCartItems($cartId);
 
   <li class="list-group-item d-flex justify-content-between">
     <h5>Totale</h5>
-    <h5><?php echo $cart_total['total'] ?> €</h5>
+    <h5><?php echo $cartTotal['total'] ?> €</h5>
   </li>
 </ul>
 
 <div class="row">
   <h3>Dati passeggero</h3>
-  <form class="needs-validation" novalidate>
+  <form method="post">
     <div class="row g-3">
       <div class="col-sm-6">
         <label for="firstName" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
         <div class="invalid-feedback">
           È necessario fornire un nome valido.
         </div>
@@ -56,7 +56,7 @@ $cart_items = $cm->getCartItems($cartId);
 
       <div class="col-sm-6">
         <label for="lastName" class="form-label">Cognome</label>
-        <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
         <div class="invalid-feedback">
           È necessario fornire un cognome valido.
         </div>
@@ -64,7 +64,7 @@ $cart_items = $cm->getCartItems($cartId);
 
       <div class="col-12">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email">
+        <input type="email" class="form-control" name="email" id="email">
         <div class="invalid-feedback">
           Inserisci un indirizzo email valido per l'invio dei biglietti.
         </div>
@@ -87,7 +87,7 @@ $cart_items = $cm->getCartItems($cartId);
             return actions.order.create({
               purchase_units: [{
                 amount: {
-                  value: <?php echo $cart_total['total'] ?> // Can also reference a variable or function
+                  value: <?php echo $cartTotal['total'] ?> // Can also reference a variable or function
                 }
               }]
             });

@@ -7,18 +7,18 @@ if (!defined('ROOT_URL')) {
 if (isset($_POST['add_to_cart'])) {
 
   //prendi i valori di "flight_id", "partenza", "arrivo" e "data" dal form
-  $flight_id = $_POST['id'];
-  $part = $_POST['partenza'];
-  $arr = $_POST['arrivo'];
-  $data = $_POST['data'];
-  $qty = $_POST['quantity'];
+  $flightId = $_POST['id'];
+  $dep = $_POST['departure'];
+  $dest = $_POST['destination'];
+  $flightDate = $_POST['flightDate'];
+  $psg = $_POST['passengers'];
 
   //logica di "add_to_cart"
   $cm = new CartManager();
   $cartId =  $cm->getCurrentCartId();
 
   //aggiungi al carrello "cart_id" il volo "flight_id" con data "$data"
-  $cm->addToCart($flight_id, $cartId, $data, $qty);
+  $cm->addToCart($flightId, $cartId, $flightDate, $psg);
 
   //messaggio per l'utente
 
@@ -32,8 +32,10 @@ $depFlights = $flightMgr->getSome();
 
   <h3>Andata</h3>
 
-  <?php foreach ($depFlights as $flight) : ?>
-
+  <?php foreach ($depFlights as $flight) :
+    $depTime = new DateTime($flight->depTime);
+    $destTime = new DateTime($flight->destTime);
+  ?>
     <div class="card-group mt-3 mb-3" class="departureCard">
       <div class="card text-center">
         <div class="card-body">
@@ -46,26 +48,26 @@ $depFlights = $flightMgr->getSome();
 
       <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_partenza)); ?></h5>
+          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h5>
         </div>
         <div class="card-footer">
-          <small class="text-muted"><?php echo $flight->partenza ?></small>
+          <small class="text-muted"><?php echo $flight->departure ?></small>
         </div>
       </div>
 
       <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title ">Durata</h5>
-          <p class="card-text">orario</p>
+          <p class="card-text"><?php echo ($depTime->diff($destTime))->format('%h h e %i min') ?></p>
         </div>
       </div>
 
       <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_arrivo)); ?></h5>
+          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h5>
         </div>
         <div class="card-footer">
-          <small class="text-muted"><?php echo $flight->arrivo ?></small>
+          <small class="text-muted"><?php echo $flight->destination ?></small>
         </div>
       </div>
 
@@ -73,24 +75,24 @@ $depFlights = $flightMgr->getSome();
         <div class="card-body">
           <form action="" method="post">
             <input name="id" type="hidden" value="<?php echo $flight->id ?>">
-            <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
-            <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
-            <input name="data" type="hidden" value="<?php echo $_GET['data_and']; ?>">
-            <input name="quantity" type="hidden" value="<?php echo $_GET['quantity']; ?>">
+            <input name="departure" type="hidden" value="<?php echo $flight->departure ?>">
+            <input name="destination" type="hidden" value="<?php echo $flight->destination ?>">
+            <input name="flightDate" type="hidden" value="<?php echo $_GET['dateOut']; ?>">
+            <input name="passengers" type="hidden" value="<?php echo $_GET['passengers']; ?>">
             <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
           </form>
         </div>
         <div class="card-footer">
-          <small class=""><?php echo $flight->prezzo ?> €</small>
+          <small class=""><?php echo $flight->price ?> €</small>
         </div>
       </div>
     </div>
   <?php endforeach; ?>
 
-  <?php if (isset($_GET['data_rit'])) : ?>
+  <?php if (isset($_GET['dateIn'])) : ?>
     <?php $retFlights = $flightMgr->getSomeInverted(); ?>
 
-    <h3 class="resultCard">Ritorno</h3>
+    <h3 class="returnCard">Ritorno</h3>
 
     <?php foreach ($retFlights as $flight) : ?>
 
@@ -107,26 +109,26 @@ $depFlights = $flightMgr->getSome();
 
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_partenza)); ?></h5>
+            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h5>
           </div>
           <div class="card-footer">
-            <small class="text-muted"><?php echo $flight->partenza ?></small>
+            <small class="text-muted"><?php echo $flight->departure ?></small>
           </div>
         </div>
 
         <div class="card text-center">
           <div class="card-body">
             <h5 class="card-title ">Durata</h5>
-            <p class="card-text">orario</p>
+            <p class="card-text"><?php echo ($depTime->diff($destTime))->format('%h h e %i min') ?></p>
           </div>
         </div>
 
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->ora_arrivo)); ?></h5>
+            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h5>
           </div>
           <div class="card-footer">
-            <small class="text-muted"><?php echo $flight->arrivo ?></small>
+            <small class="text-muted"><?php echo $flight->destination ?></small>
           </div>
         </div>
 
@@ -134,15 +136,15 @@ $depFlights = $flightMgr->getSome();
           <div class="card-body">
             <form action="" method="post">
               <input name="id" type="hidden" value="<?php echo $flight->id ?>">
-              <input name="partenza" type="hidden" value="<?php echo $flight->partenza ?>">
-              <input name="arrivo" type="hidden" value="<?php echo $flight->arrivo ?>">
-              <input name="data" type="hidden" value="<?php echo $_GET['data_rit']; ?>">
-              <input name="quantity" type="hidden" value="<?php echo $_GET['quantity']; ?>">
+              <input name="departure" type="hidden" value="<?php echo $flight->departure ?>">
+              <input name="destination" type="hidden" value="<?php echo $flight->destination ?>">
+              <input name="flightDate" type="hidden" value="<?php echo $_GET['dateIn']; ?>">
+              <input name="passengers" type="hidden" value="<?php echo $_GET['passengers']; ?>">
               <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
             </form>
           </div>
           <div class="card-footer">
-            <small class=""><?php echo $flight->prezzo ?> €</small>
+            <small class=""><?php echo $flight->price ?> €</small>
           </div>
         </div>
       </div>

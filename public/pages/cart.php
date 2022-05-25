@@ -6,43 +6,46 @@ $cartId =  $cm->getCurrentCartId();
 if (isset($_POST['delete'])) {
 
   // cancella elemento del carrello
-  $flight_id = $_POST['id'];
-  $cm->removeFromCart($flight_id, $cartId);
+  $flightId = $_POST['id'];
+  $cm->removeFromCart($flightId, $cartId);
 }
 
 // if (isset($_POST['change'])){
 //   //modifico dati tratta
 // }
 
-$cart_total = $cm->getCartTotal($cartId);
-$cart_items = $cm->getCartItems($cartId);
+$cartTotal = $cm->getCartTotal($cartId);
+$tickets = $cm->getTickets($cartId);
 
 ?>
 
 
-<?php if (count($cart_items) > 0) : ?>
+<?php if (count($tickets) > 0) : ?>
 
   <h4 class="d-flex justify-content-between align-items-center mb-3">
     <span>Il tuo viaggio</span>
   </h4>
   <ul class="list-group mb-3">
 
-    <?php foreach ($cart_items as $item) : ?>
+    <?php foreach ($tickets as $ticket) : ?>
 
       <li class="list-group-item d-flex justify-content-between lh-sm">
         <div>
-          <h6 class="my-0"><?php echo $item['partenza'] ?> - <?php echo $item['arrivo'] ?></h6>
-          <p class="my-0 text-muted"><?php echo date('j M', strtotime($item['data'])); ?> &bull; <?php echo date('H:i', strtotime($item['ora_partenza'])); ?> - <?php echo date('H:i', strtotime($item['ora_arrivo'])); ?></p>
-          <small class="text-muted">id Volo <?php echo $item['id'] ?></small>
+          <h6 class="my-0"><?php echo $ticket['departure'] ?> - <?php echo $ticket['destination'] ?></h6>
+          <p class="my-0 text-muted"><?php echo date('j M', strtotime($ticket['flightDate'])); ?> &bull; <?php echo date('H:i', strtotime($ticket['depTime'])); ?> - <?php echo date('H:i', strtotime($ticket['destTime'])); ?></p>
+          <small class="text-muted">id Volo <?php echo $ticket['id'] ?></small>
         </div>
         <div class="text-end">
           <h6>
-            <?php 
-            if($item['quantity'] > 1) {echo $item['quantity'].' x ';} echo $item['prezzo_singolo'];
+            <?php
+            if ($ticket['passengers'] > 1) {
+              echo $ticket['passengers'] . ' x ';
+            }
+            echo $ticket['singlePrice'];
             ?> €
           </h6>
           <form action="" method="post">
-            <input type="hidden" name="id" value="<?php echo $item['id'] ?>">
+            <input type="hidden" name="id" value="<?php echo $ticket['id'] ?>">
             <!-- FUNZIONALITÀ DA INSERIRE -->
             <!-- <button name="change" type="submit" class="btn btn-sm btn-info">MODIFICA</button> -->
             <button name="delete" type="submit" class="btn btn-sm btn-danger">CANCELLA</button>
@@ -52,7 +55,7 @@ $cart_items = $cm->getCartItems($cartId);
     <?php endforeach; ?>
     <li class="list-group-item d-flex justify-content-between">
       <h5>Totale</h5>
-      <h5><?php echo $cart_total['total'] ?> €</h5>
+      <h5><?php echo $cartTotal['total'] ?> €</h5>
     </li>
   </ul>
 

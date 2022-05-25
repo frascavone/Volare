@@ -1,11 +1,11 @@
 <?php
 $cm = new CartManager();
 $cartId =  $cm->getCurrentCartId();
-$cart_total = $cm->getCartTotal($cartId);
+$cartTotal = $cm->getCartTotal($cartId);
 ?>
 
 <footer class="bg-primary">
-  Copiright &#169 <?php echo date("Y"); ?> fra.scavone
+  Copiright &#169 2022 fra.scavone
 </footer>
 
 
@@ -15,8 +15,9 @@ $cart_total = $cm->getCartTotal($cartId);
 <script src="<?php echo ROOT_URL ?>assets/js/main.js"></script>
 <script>
   $(document).ready(function() {
-    $('.js-totCartItems').html('<?php echo $cart_total['num_flights'] ?>');
+    $('.js-totCartItems').html('<?php echo $cartTotal['passengers'] ?>');
   });
 </script>
 </body>
+
 </html>

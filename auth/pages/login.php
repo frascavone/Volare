@@ -2,26 +2,25 @@
 
 $errMsg = '';
 
-if ($loggedInUser){
-  echo '<script>location.href="'.ROOT_URL.'public"</script>';
+if ($loggedInUser) {
+  echo '<script>location.href="' . ROOT_URL . 'public"</script>';
   exit;
 }
 
-if (isset($_POST['login'])){
+if (isset($_POST['login'])) {
 
   $email = htmlspecialchars(trim($_POST['email']));
-  $password = htmlspecialchars(trim($_POST['password'])); 
+  $password = htmlspecialchars(trim($_POST['password']));
   $userMgr = new UserManager();
-  $result = $userMgr -> login($email, $password);
+  $result = $userMgr->login($email, $password);
 
-  if($result){
-    echo '<script>location.href="'.ROOT_URL.'public"</script>';
-  exit;
+  if ($result) {
+    echo '<script>location.href="' . ROOT_URL . 'public"</script>';
+    exit;
   } else {
     echo $errMsg = 'Login fallito...';
   }
-
-} 
+}
 
 ?>
 
@@ -42,6 +41,8 @@ if (isset($_POST['login'])){
   </div>
   <div>
     <input class="btn btn-primary mb-2 mt-2 right" type="submit" value="ACCEDI" name="login">
-    <a class="underline" href="<?php echo ROOT_URL; ?>auth?page=register"><p>Non hai un account? Registrati</p></a>
-  </div>  
+    <a class="underline" href="<?php echo ROOT_URL; ?>auth?page=register">
+      <p>Non hai un account? Registrati</p>
+    </a>
+  </div>
 </form>

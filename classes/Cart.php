@@ -1,138 +1,148 @@
 <?php
 
-class CartManager extends DBManager{
+class CartManager extends DBManager
+{
 
   private $clientId;
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
-    $this->columns = array('id', 'client_id');
-    $this->tableName = 'carrello';
-    $this-> _initClientIdFromSession();
+    $this->columns = array('id', 'clientId');
+    $this->tableName = 'cart';
+    $this->_initClientIdFromSession();
   }
 
   // public methods
-  public function getQty($cartId, $flight_id){
-    $result = $this->db -> query("SELECT quantity FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
-    return $result[0]; 
+  public function getQty($cartId, $flightId)
+  {
+    $result = $this->db->query("SELECT passengers FROM ticket WHERE cartId = $cartId AND flightId = $flightId");
+    return $result[0];
   }
 
-  public function getCartTotal($cartId){
-    $result = $this-> db -> query("
+  public function getCartTotal($cartId)
+  {
+    $result = $this->db->query("
     SELECT 
-    SUM(quantity) as num_flights,
-      SUM(quantity* prezzo) as total 
-    FROM cart_item 
-    INNER JOIN tratte 
-      ON cart_item.flight_id = tratte.id 
-    WHERE cart_id = $cartId
+    SUM(passengers) as passengers,
+      SUM(passengers* price) as total 
+    FROM ticket 
+    INNER JOIN flights 
+      ON ticket.flightId = flights.id 
+    WHERE cartId = $cartId
     ");
     return $result[0];
-
   }
 
-  public function getCartItems($cartId){
-    return $this -> db -> query("
+  public function getTickets($cartId)
+  {
+    return $this->db->query("
     SELECT
-      tratte.partenza as partenza,
-      tratte.ora_partenza as ora_partenza,
-      tratte.ora_arrivo as ora_arrivo,
-      tratte.arrivo as arrivo,
-      tratte.id as id,
-      tratte.prezzo as prezzo_singolo,
-      tratte.prezzo_business as prezzo_business,
-      tratte.prezzo * cart_item.quantity as total,
-      cart_item.data as data,
-      cart_item.quantity as quantity
+      flights.departure as departure,
+      flights.depTime as depTime,
+      flights.destTime as destTime,
+      flights.destination as destination,
+      flights.id as id,
+      flights.price as singlePrice,
+      flights.price * ticket.passengers as total,
+      ticket.flightDate as flightDate,
+      ticket.passengers as passengers
     FROM
-      cart_item
-      INNER JOIN tratte
-      ON cart_item.flight_id = tratte.id
+      ticket
+      INNER JOIN flights
+      ON ticket.flightId = flights.id
     WHERE
-    cart_item.cart_id = $cartId
+    ticket.cartId = $cartId
     ");
   }
 
-  public function removeCart($cartId){
-    $result = $this->db -> query("SELECT id FROM carrello WHERE id = $cartId");
-    if($result) 
-    $this -> delete($cartId);
+  public function removeCart($cartId)
+  {
+    $result = $this->db->query("SELECT id FROM cart WHERE id = $cartId");
+    if ($result)
+      $this->delete($cartId);
   }
 
-  public function removeFromCart($flight_id, $cartId){
+  public function removeFromCart($flightId, $cartId)
+  {
 
     $quantity = 0;
-    $result = $this->db -> query("SELECT quantity, id FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
-    $cart_itemId = $result[0]['id']; 
-    if(count($result) >0){
-      $quantity = $result[0]['quantity'];
-    } 
-    $quantity --;
+    $result = $this->db->query("SELECT passengers, id FROM ticket WHERE cartId = $cartId AND flightId = $flightId");
+    $cartItemId = $result[0]['id'];
+    if (count($result) > 0) {
+      $quantity = $result[0]['passengers'];
+    }
+    $quantity--;
 
-    if ($quantity > 0){
-    $this->db -> execute("UPDATE cart_item SET quantity = $quantity WHERE cart_id = $cartId AND flight_id = $flight_id");   
-    } else{
-      $cartItemMgr = new CartItemManager();
-      $cartItemMgr->delete($cart_itemId); 
-    } 
+    if ($quantity > 0) {
+      $this->db->execute("UPDATE ticket SET passengers = $quantity WHERE cartId = $cartId AND flightId = $flightId");
+    } else {
+      $cartItemMgr = new TicketManager();
+      $cartItemMgr->delete($cartItemId);
+    }
   }
 
 
-  public function addToCart($flight_id, $cartId, $data, $qty){
+  public function addToCart($flightId, $cartId, $flightDate, $psg)
+  {
     $quantity = 0;
-    $result = $this->db -> query("SELECT quantity FROM cart_item WHERE cart_id = $cartId AND flight_id = $flight_id");
-    if(count($result) >0){
-      $quantity = $result[0]['quantity'];
-    } 
-    $quantity ++;
-    
-    if (count($result) > 0){
-    $this->db -> execute("UPDATE cart_item SET quantity = $quantity, data = $data WHERE cart_id = $cartId AND flight_id = $flight_id");   
-    } else{
-      $cartItemMgr = new CartItemManager();
+    $result = $this->db->query("SELECT passengers FROM ticket WHERE cartId = $cartId AND flightId = $flightId");
+    if (count($result) > 0) {
+      $quantity = $result[0]['passengers'];
+    }
+    $quantity++;
+
+    if (count($result) > 0) {
+      $this->db->execute("UPDATE ticket SET passengers = $quantity, flightDate = $flightDate WHERE cartId = $cartId AND flightId = $flightId");
+    } else {
+      $cartItemMgr = new TicketManager();
       $newId = $cartItemMgr->create([
-       'cart_id' => $cartId,
-       'flight_id' => $flight_id,
-       'data' => $data,
-       'quantity' => $qty
-      ]); 
-    } 
+        'cartId' => $cartId,
+        'flightId' => $flightId,
+        'flightDate' => $flightDate,
+        'passengers' => $psg
+      ]);
+    }
   }
 
-  public function getCurrentCartId(){
+  public function getCurrentCartId()
+  {
     $cartId = 0;
 
-    $result = $this-> db -> query("SELECT * FROM carrello WHERE client_id = '$this->clientId'");
-    if (count($result) > 0){
+    $result = $this->db->query("SELECT * FROM cart WHERE clientId = '$this->clientId'");
+    if (count($result) > 0) {
       $cartId = $result[0]['id'];
-    } else{
+    } else {
       $cartId = $this->create([
-        'client_id' => $this->clientId
+        'clientId' => $this->clientId
       ]);
     }
     return $cartId;
   }
 
   // private methods
-  private function _initClientIdFromSession(){
-    if (isset($_SESSION['client_id'])){
-      $this->clientId = $_SESSION['client_id'];
-    } else{
+  private function _initClientIdFromSession()
+  {
+    if (isset($_SESSION['clientId'])) {
+      $this->clientId = $_SESSION['clientId'];
+    } else {
       // genera stringa casuale
-      $str = substr(md5(mt_rand()),0 ,20);
+      $str = substr(md5(mt_rand()), 0, 20);
       // assegna la stringa casuale alla variabile $clientId      
-      $_SESSION['client_id'] = $str;
+      $_SESSION['clientId'] = $str;
       $this->clientId = $str;
     }
-  }  
+  }
 }
 
 
 
-class CartItemManager extends DBManager{
-  public function __construct(){
+class TicketManager extends DBManager
+{
+  public function __construct()
+  {
     parent::__construct();
-    $this->columns = array('id', 'cart_id', 'flight_id', 'quantity', 'data');
-    $this->tableName = 'cart_item';
+    $this->columns = array('id', 'cartId', 'flightId', 'passengers', 'flightDate');
+    $this->tableName = 'ticket';
   }
 }
