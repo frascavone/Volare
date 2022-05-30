@@ -36,115 +36,120 @@ $depFlights = $flightMgr->getSome();
     $depTime = new DateTime($flight->depTime);
     $destTime = new DateTime($flight->destTime);
   ?>
-    <div class="card-group mt-3 mb-3" class="departureCard">
-      <div class="card text-center">
-        <div class="card-body">
-          <small class="text-muted">N. volo</small>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $flight->id ?></h5>
-        </div>
-      </div>
 
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h5>
-        </div>
-        <div class="card-footer">
-          <small class="text-muted"><?php echo $flight->departure ?></small>
-        </div>
-      </div>
-
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title ">Durata</h5>
-          <p class="card-text"><?php echo ($depTime->diff($destTime))->format('%h h e %i min') ?></p>
-        </div>
-      </div>
-
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h5>
-        </div>
-        <div class="card-footer">
-          <small class="text-muted"><?php echo $flight->destination ?></small>
-        </div>
-      </div>
-
-      <div class="card text-center">
-        <div class="card-body">
-          <form action="" method="post">
-            <input name="id" type="hidden" value="<?php echo $flight->id ?>">
-            <input name="departure" type="hidden" value="<?php echo $flight->departure ?>">
-            <input name="destination" type="hidden" value="<?php echo $flight->destination ?>">
-            <input name="flightDate" type="hidden" value="<?php echo $_GET['dateOut']; ?>">
-            <input name="passengers" type="hidden" value="<?php echo $_GET['passengers']; ?>">
-            <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
-          </form>
-        </div>
-        <div class="card-footer">
-          <small class=""><?php echo $flight->price ?> €</small>
-        </div>
-      </div>
-    </div>
-  <?php endforeach; ?>
-
-  <?php if (isset($_GET['dateIn'])) : ?>
-    <?php $retFlights = $flightMgr->getSomeInverted(); ?>
-
-    <h3 class="returnCard">Ritorno</h3>
-
-    <?php foreach ($retFlights as $flight) : ?>
-
-      <div class="card-group mt-3 mb-3 returnCard">
-        <hr>
-        <div class="card text-center">
+    <div class="container">
+      <div class="card-group" id="departureCard">
+        <div class="card">
           <div class="card-body">
             <small class="text-muted">N. volo</small>
           </div>
           <div class="card-body">
-            <h5 class="card-title"><?php echo $flight->id ?></h5>
+            <h6 class="card-title"><?php echo $flight->id ?></h6>
           </div>
         </div>
 
-        <div class="card text-center">
+        <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h5>
+            <h6 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h6>
           </div>
           <div class="card-footer">
             <small class="text-muted"><?php echo $flight->departure ?></small>
           </div>
         </div>
 
-        <div class="card text-center">
+        <div class="card">
           <div class="card-body">
-            <h5 class="card-title ">Durata</h5>
+            <h6 class="card-title "><i class="fa-solid fa-plane-departure"></i></h6>
             <p class="card-text"><?php echo ($depTime->diff($destTime))->format('%h h e %i min') ?></p>
           </div>
         </div>
 
-        <div class="card text-center">
+        <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h5>
+            <h6 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h6>
           </div>
           <div class="card-footer">
             <small class="text-muted"><?php echo $flight->destination ?></small>
           </div>
         </div>
 
-        <div class="card text-center">
+        <div class="card">
           <div class="card-body">
             <form action="" method="post">
               <input name="id" type="hidden" value="<?php echo $flight->id ?>">
               <input name="departure" type="hidden" value="<?php echo $flight->departure ?>">
               <input name="destination" type="hidden" value="<?php echo $flight->destination ?>">
-              <input name="flightDate" type="hidden" value="<?php echo $_GET['dateIn']; ?>">
+              <input name="flightDate" type="hidden" value="<?php echo $_GET['dateOut']; ?>">
               <input name="passengers" type="hidden" value="<?php echo $_GET['passengers']; ?>">
-              <button name="add_to_cart" type="submit" class="btn btn-primary">SELEZIONA
+              <button type="submit" name="add_to_cart" class="btn btn-primary p-1">SELEZIONA</button>
             </form>
           </div>
           <div class="card-footer">
             <small class=""><?php echo $flight->price ?> €</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  <?php endforeach; ?>
+
+  <?php if (isset($_GET['dateIn'])) : ?>
+    <h3>Ritorno</h3>
+
+    <?php $retFlights = $flightMgr->getSomeInverted(); ?>
+
+    <?php foreach ($retFlights as $flight) : ?>
+
+      <div class="container">
+        <div class="card-group" id="returnCard">
+          <hr>
+          <div class="card">
+            <div class="card-body">
+              <small class="text-muted">N. volo</small>
+            </div>
+            <div class="card-body">
+              <h6 class="card-title"><?php echo $flight->id ?></h6>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title"><?php echo date('H:i', strtotime($flight->depTime)); ?></h6>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><?php echo $flight->departure ?></small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title "><i class="fa-solid fa-plane-departure fa-flip-horizontal"></i></h6>
+              <p class="card-text"><?php echo ($depTime->diff($destTime))->format('%h h e %i min') ?></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title"><?php echo date('H:i', strtotime($flight->destTime)); ?></h6>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><?php echo $flight->destination ?></small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <form action="" method="post">
+                <input name="id" type="hidden" value="<?php echo $flight->id ?>">
+                <input name="departure" type="hidden" value="<?php echo $flight->departure ?>">
+                <input name="destination" type="hidden" value="<?php echo $flight->destination ?>">
+                <input name="flightDate" type="hidden" value="<?php echo $_GET['dateIn']; ?>">
+                <input name="passengers" type="hidden" value="<?php echo $_GET['passengers']; ?>">
+                <button type="submit" name="add_to_cart" class="btn btn-primary p-1">SELEZIONA</button>
+              </form>
+            </div>
+            <div class="card-footer">
+              <small class=""><?php echo $flight->price ?> €</small>
+            </div>
           </div>
         </div>
       </div>

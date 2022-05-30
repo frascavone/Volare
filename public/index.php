@@ -6,7 +6,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 'homepage';
 
 <?php include ROOT_PATH . "public/template-parts/header.php" ?>
 
-<div class="container mt-3" id="main-container">
+<div class="container mt-3">
   <div class="row">
     <?php include "pages/$page.php"; ?>
   </div>

@@ -7,43 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://bootswatch.com/5/zephyr/bootstrap.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href=" <?php echo ROOT_URL ?>assets/css/style.css">
+  <style>
+    <?php include "../assets/css/style.css" ?>
+  </style>
   <title>Volare</title>
 </head>
 
 <body>
-  <style>
-    #logo {
-      height: 100px;
-      border-radius: 50%;
-      border: 5px solid white;
-      background-color: white;
-    }
-
-    @media only screen and (min-width: 768px) {
-      .navbar-brand img {
-        height: 100px;
-        display: block;
-      }
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 10px;
-      color: white;
-      font-style: italic;
-
-      height: 100px;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
-
   <nav class="navbar navbar-expand-md navbar-dark bg-primary" aria-label="Fourth navbar example">
     <div class="container">
-      <a class="navbar-brand" href="<?php echo ROOT_URL; ?>public?page=homepage">
+      <a class="navbar-brand m-0" href="<?php echo ROOT_URL; ?>public?page=homepage">
         <img id="logo" src="<?php echo ROOT_URL ?>assets/immagini/airlogo.png" alt="logo">
-        <p>VOLARE</p>
+        <p style="margin:0;">VOLARE</p>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
