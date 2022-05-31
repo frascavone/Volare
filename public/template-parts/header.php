@@ -16,7 +16,7 @@
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-primary" aria-label="Fourth navbar example">
     <div class="container">
-      <a class="navbar-brand m-0" href="<?php echo ROOT_URL; ?>public?page=homepage">
+      <a class="navbar-brand m-0 text-center" href="<?php echo ROOT_URL; ?>public?page=homepage">
         <img id="logo" src="<?php echo ROOT_URL ?>assets/immagini/airlogo.png" alt="logo">
         <p style="margin:0;">VOLARE</p>
       </a>
